@@ -1,48 +1,73 @@
 # murphy-home-lab
 
-Personal home lab server running self-hosted media and services via Docker on Windows 11.
+Personal home lab running self-hosted media and services via Docker, across two machines — a primary Ubuntu Server mini PC (`nexus`) and a legacy Windows 11 desktop (`MurphyServer`).
 
 ---
 
 ## Hardware
 
+### nexus — Primary Server (MINISFORUM UM760 Slim)
+
 | Component | Details |
 |-----------|---------|
-| **Device** | MurphyServer |
-| **CPU** | Intel Core i7-6700 @ 3.40GHz |
+| **Hostname** | nexus |
+| **CPU** | AMD Ryzen 5 7640HS @ up to 5.0GHz (6C/12T) |
+| **RAM** | 32GB DDR5 4800MHz |
+| **OS** | Ubuntu Server (headless) |
+| **Storage** | 1TB M.2 PCIe 4.0 NVMe SSD |
+| **Network** | 2.5GbE + Wi-Fi 6E |
+
+### MurphyServer — Legacy Desktop (Intel i7-6700)
+
+| Component | Details |
+|-----------|---------|
+| **Hostname** | MurphyServer |
+| **CPU** | Intel Core i7-6700 @ 3.40GHz (4C/8T) |
 | **RAM** | 8GB DDR4 2133MHz (upgrade to 32GB planned) |
-| **OS** | Windows 11 |
-| **Storage** | Internal HDD for media (`D:\Plex`) |
+| **OS** | Windows 11 64-bit |
+| **Storage** | 150GB SSD (OS) + Internal HDD (media at `D:\Plex`) |
+| **Network** | Ethernet |
+
+> Full hardware specs: [nexus](docs/hardware-nexus.md) · [MurphyServer](docs/hardware-murphyserver.md)
 
 ---
 
 ## Services
 
-| Service | Description | Status |
-|---------|-------------|--------|
-| [Plex Media Server](https://plex.tv) | Media streaming server | ✅ Running |
+| Service | Host | Description | Status |
+|---------|------|-------------|--------|
+| [Plex Media Server](https://plex.tv) | MurphyServer | Media streaming server | ✅ Running |
 
 ---
 
 ## Infrastructure
 
-- **Containerization:** Docker Desktop on Windows 11
+- **Primary server:** `nexus` — MINISFORUM UM760 Slim running Ubuntu Server (headless)
+- **Legacy server:** `MurphyServer` — Windows 11 desktop, currently hosting Plex
+- **Containerization:** Docker Desktop on MurphyServer (Windows); Docker on nexus (Ubuntu)
 - **Restart policy:** `unless-stopped` on all containers (auto-starts on reboot)
-- **Remote access:** RDP for server management, Plex remote access via port forwarding
-- **Port forwarding:** Port `32400` forwarded to host machine for Plex remote access
+- **Remote access:** SSH for nexus management; RDP for MurphyServer management
+- **Port forwarding:** Port `32400` forwarded to MurphyServer for Plex remote access
 
 ---
 
 ## Network
 
-| Service | Internal Port | External Port |
-|---------|--------------|---------------|
-| Plex | 32400 | 32400 |
+| Service | Host | Internal Port | External Port |
+|---------|------|--------------|---------------|
+| Plex | MurphyServer | 32400 | 32400 |
 
 ---
 
 ## Directory Structure
 
+### nexus (Ubuntu Server)
+```
+~/docker/
+└── (services to be migrated here)
+```
+
+### MurphyServer (Windows 11)
 ```
 C:\Docker\
 └── Plex\
@@ -61,16 +86,10 @@ Sensitive values (API keys, tokens, passwords) are stored in a local `.env` file
 
 ---
 
-## Planned Upgrades
-
-- [ ] RAM upgrade to 32GB DDR4 2133MHz
-- [ ] Arr stack (Sonarr, Radarr, Prowlarr, qBittorrent, Overseerr)
-- [ ] Game server
-- [ ] Self-hosted website
-- [ ] Migrate from Windows 11 to Ubuntu Desktop
-
 ---
 
 ## Docs
 
+- [nexus Hardware](docs/hardware-nexus.md) — MINISFORUM UM760 Slim full specs
+- [MurphyServer Hardware](docs/hardware-murphyserver.md) — Intel i7-6700 desktop full specs
 - [Plex Migration Guide](docs/plex-migration.md) — Steps for moving Plex to a new machine
