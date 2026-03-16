@@ -33,12 +33,6 @@ Documentation of all physical hardware in the murphy-home-lab setup.
 
 ---
 
-## Planned Hardware Upgrades
-
-| Upgrade | Details | Status |
-|---------|---------|--------|
-| RAM upgrade | Replace 2x4GB with 2x16GB SK Hynix DDR4 2133MHz UDIMM | 🔜 Pending |
-
 ---
 
 ## Resource Usage (Current Baseline)
