@@ -14,6 +14,10 @@ A living document of what's installed and running on this server.
 - **Status:** ✅ Installed
 - **Purpose:** Version control
 
+### Samba
+- **Status:** ✅ Installed & Running
+- **Purpose:** Network file sharing between Nexus and Windows machines
+
 ---
 
 ## Running Services
