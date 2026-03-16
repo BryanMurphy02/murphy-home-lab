@@ -18,9 +18,16 @@ A living document of what's installed and running on this server.
 
 ## Running Services
 
+### Portainer
+- **Status:** 🟢 Running
+- **Host:** Docker container
+- **Ports:** 9443, 8000
+- **Description:** Docker management GUI
+
 ### Minecraft Server
 - **Status:** 🟢 Running
 - **Host:** Docker container
+- **Ports:** 25565:25565
 - **Description:** Game server for Minecraft
 
 ---
