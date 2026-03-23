@@ -117,27 +117,6 @@ Backs up key server directories using `rsync`, saves a list of installed package
 [2026-03-23 03:00:12] [INFO] script end
 ```
 
-**Cron schedule (daily at 3am):**
-```
-0 3 * * * /path/to/backup.sh >> /var/log/backups/cron.log 2>&1
-```
-
-> **Note:** Run via `sudo crontab -e` to ensure the script has the permissions needed to read protected files and preserve ownership.
-
----
-
-## Cron Summary
-
-To schedule both scripts, run `sudo crontab -e` and add:
-
-```
-# System health log - every hour
-0 * * * * /path/to/system-health-log.sh >> /var/log/system-health-check/cron.log 2>&1
-
-# Backup - daily at 3am
-0 3 * * * /path/to/backup.sh >> /var/log/backups/cron.log 2>&1
-```
-
 ---
 
 ## Dependencies
