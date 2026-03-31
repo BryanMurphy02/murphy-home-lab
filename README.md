@@ -62,7 +62,9 @@ Personal home lab running self-hosted media and services via Docker, across two 
 │   └── nginx/
 │       └── docker-compose.yml
 └── my-scripts/
-    └── (cron automated bash and python scripts)
+    ├── backup.sh
+    ├── process-monitor.py
+    └── log-analyzer.py
 ```
 
 ### MurphyServer (Windows 11)
