@@ -41,6 +41,7 @@ A living document of what's installed and running on this server.
 - **Host:** Docker container (separate docker-compose)
 - **Network:** `nexus-network`
 - **Stack:** Python Flask (web framework) + PostgreSQL (database, bundled in same container)
+- **Repo:** [BryanMurphy02/digital-library](https://github.com/BryanMurphy02/digital-library)
 - **Description:** Personal web app served via Nginx. A self-hosted digital library accessible through the browser on port 80.
 
 ### Minecraft Server
