@@ -3,8 +3,8 @@
 # A script to log a brief summary of system information
 
 # make the directory if it doesn't exist
-mkdir -p "/var/log/system-health-check"
-FILE="/var/log/system-health-check/sys-health.log"
+mkdir -p "/var/log/my-scripts/system-health-check"
+FILE="/var/log/my-scripts/system-health-check/sys-health.log"
 # make the log file if it doesn't exit
 if [ ! -f "$FILE" ]; then
     touch "$FILE"
@@ -17,6 +17,10 @@ log(){
     printf -v logdate "%(%Y-%m-%d %H:%M:%S)T"
     printf "[$logdate] [$1] $2\n" >> "$FILE"
 }
+
+# log the script beginning
+printf -v scriptStart "%(%Y-%m-%d %H:%M:%S)T"
+log INFO "script began at $scriptStart"
 
 
 log INFO "hostname:$HOSTNAME"

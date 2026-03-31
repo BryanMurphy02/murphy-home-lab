@@ -8,8 +8,8 @@ printf -v scriptStart "%(%Y-%m-%d %H:%M:%S)T"
 start=$SECONDS
 
 # create log dir and file if not already there
-LOGDIR="/var/log/backups"
-FILE="/var/log/backups/backup.log"
+LOGDIR="/var/log/my-scripts/backups"
+FILE="/var/log/my-scripts/backups/backup.log"
 mkdir -p "$LOGDIR"
 
 if [ ! -f "$FILE" ]; then
@@ -44,16 +44,16 @@ rsync -aAX --relative /home/bryan "$BACKUPDIR/"
 if [ $? -eq 0 ]; then
     log INFO "/home/bryan exists and backed up"
 else
-    log ERROR "/home/bryan backup error"
+    log ERR "/home/bryan backup error"
 fi
 
-# backing up docker
+# backing up /opt
 log INFO "backing up docker containers"
-rsync -aAX --relative /opt/docker "$BACKUPDIR/"
+rsync -aAX --relative /opt "$BACKUPDIR/"
 if [ $? -eq 0 ]; then
-    log INFO "/opt/docker exists and backed up"
+    log INFO "/opt exists and backed up"
 else
-    log ERROR "/opt/docker backup error"
+    log ERR "/opt backup error"
 fi
 
 # backing up /etc
@@ -62,7 +62,7 @@ rsync -aAX --relative /etc "$BACKUPDIR/"
 if [ $? -eq 0 ]; then
     log INFO "/etc exists and backed up"
 else
-    log ERROR "/etc backup error"
+    log ERR "/etc backup error"
 fi
 
 # getting installed packages list
@@ -73,7 +73,7 @@ dpkg --get-selections > "$BACKUPDIR/packages/installed-packages.txt"
 if [ $? -eq 0 ]; then
     log INFO "packages list exists and backed up"
 else
-    log ERROR "package list backup error"
+    log ERR "package list backup error"
 fi
 
 
@@ -86,10 +86,10 @@ if [ $? -eq 0 ]; then
     if [ $? -eq 0 ]; then
         log INFO "uncompressed backup deleted"
     else
-        log ERROR "error in deleting uncompressed backup"
+        log ERR "error in deleting uncompressed backup"
     fi
 else
-    log ERROR "backup compress error"
+    log ERR "backup compress error"
 fi
 
 
@@ -99,7 +99,7 @@ find /srv/backups -maxdepth 1 -name "*.tar.gz" -mtime +14 -delete
 if [ $? -eq 0 ]; then
     log INFO "old backups deleted successfully"
 else
-    log ERROR "error in deleting old backups"
+    log ERR "error in deleting old backups"
 fi
 
 log INFO "Backup size: $(du -sh "$BACKUPDIR.tar.gz" | cut -f1)"
