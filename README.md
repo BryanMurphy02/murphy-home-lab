@@ -46,7 +46,6 @@ Personal home lab running self-hosted media and services via Docker, across two 
 - **Legacy server:** `MurphyServer` — Windows 11 desktop, currently hosting Plex
 - **Containerization:** Docker on nexus (Ubuntu); Docker Desktop on MurphyServer (Windows)
 - **Remote access:** SSH for nexus management; RDP for MurphyServer management
-- **Port forwarding:** Port `32400` forwarded to MurphyServer for Plex remote access
 
 ---
 
@@ -55,9 +54,14 @@ Personal home lab running self-hosted media and services via Docker, across two 
 ### nexus (Ubuntu Server)
 ```
 /opt/
-└──docker/
-    └── (services to be migrated here)
-└──my-scripts/
+├── docker/
+│   ├── digital-library/
+│   │   └── docker-compose.yml
+│   ├── minecraft/
+│   │   └── docker-compose.yml
+│   └── nginx/
+│       └── docker-compose.yml
+└── my-scripts/
     └── (cron automated bash and python scripts)
 ```
 
