@@ -1,2 +1,0 @@
-Nord VPN
-Qbittorrent

@@ -44,18 +44,9 @@ Personal home lab running self-hosted media and services via Docker, across two 
 
 - **Primary server:** `nexus` — MINISFORUM UM760 Slim running Ubuntu Server (headless)
 - **Legacy server:** `MurphyServer` — Windows 11 desktop, currently hosting Plex
-- **Containerization:** Docker Desktop on MurphyServer (Windows); Docker on nexus (Ubuntu)
-- **Restart policy:** `unless-stopped` on all containers (auto-starts on reboot)
+- **Containerization:** Docker on nexus (Ubuntu); Docker Desktop on MurphyServer (Windows)
 - **Remote access:** SSH for nexus management; RDP for MurphyServer management
 - **Port forwarding:** Port `32400` forwarded to MurphyServer for Plex remote access
-
----
-
-## Network
-
-| Service | Host | Internal Port | External Port |
-|---------|------|--------------|---------------|
-| Plex | MurphyServer | 32400 | 32400 |
 
 ---
 
@@ -63,8 +54,11 @@ Personal home lab running self-hosted media and services via Docker, across two 
 
 ### nexus (Ubuntu Server)
 ```
-~/docker/
-└── (services to be migrated here)
+/opt/
+└──docker/
+    └── (services to be migrated here)
+└──my-scripts/
+    └── (cron automated bash and python scripts)
 ```
 
 ### MurphyServer (Windows 11)
@@ -77,14 +71,6 @@ C:\Docker\
 
 D:\Plex\               — Media library
 ```
-
----
-
-## Secrets & Environment Variables
-
-Sensitive values (API keys, tokens, passwords) are stored in a local `.env` file and are never committed to this repo. A `.env.example` file documents the required variables without values.
-
----
 
 ---
 
