@@ -7,7 +7,7 @@ Documentation for the automated scripts located in `/opt/my-scripts/` on nexus. 
 ## backup.sh
 
 - **Language:** Bash
-- **Schedule:** Daily at 3:00 AM
+- **Schedule:** Daily
 - **Log:** `/var/log/my-scripts/backups/backup.log`
 
 ### What it does
@@ -123,16 +123,6 @@ Errors:    0
 Warnings:  0
 ========================================
 ```
-
----
-
-## Cron Schedule Summary
-
-| Script | Schedule | Cron Expression |
-|--------|----------|-----------------|
-| `backup.sh` | Daily at 3:00 AM | `0 3 * * *` |
-| `process-monitor.py` | Every hour | `0 * * * *` |
-| `log-analyzer.py` | Daily | `0 0 * * *` |
 
 ---
 
