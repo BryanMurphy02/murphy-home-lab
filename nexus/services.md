@@ -14,6 +14,10 @@ A living document of what's installed and running on this server.
 - **Status:** ✅ Installed & Running
 - **Purpose:** Web server and reverse proxy for routing traffic to hosted services
 
+### Calibre-Web Automated
+- **Status:** ✅ Installed & Running
+- **Purpose:** Self-hosted e-book library manager with automatic book ingestion
+
 ### Git
 - **Status:** ✅ Installed
 - **Purpose:** Version control
@@ -49,6 +53,14 @@ A living document of what's installed and running on this server.
 - **Host:** Docker container
 - **Ports:** 25565:25565
 - **Description:** Game server for Minecraft
+
+### Calibre-Web Automated
+- **Status:** 🟢 Running
+- **Host:** Docker container
+- **Network:** `nexus-network`
+- **Image:** `crocodilestick/calibre-web-automated:latest`
+- **Config/Data:** `/opt/docker/cwa/`
+- **Description:** Self-hosted e-book library and reader interface, served via Nginx on port 8083. Uses the Calibre-Web Automated image which adds automatic book ingestion — books dropped into the ingest folder are automatically processed and added to the library.
 
 ### Tailscale
 - **Status:** 🟢 Running
