@@ -52,6 +52,14 @@ A living document of what's installed and running on this server.
 - **Repo:** [BryanMurphy02/digital-library](https://github.com/BryanMurphy02/digital-library)
 - **Description:** Personal web app served via Nginx. A self-hosted digital library accessible through the browser on port 80.
 
+### Allergy Safe Recipes
+- **Status:** 🟢 Running
+- **Host:** Docker container (multi-container stack)
+- **Network:** `nexus-network` (frontend only), `frontend` (frontend ↔ api), `backend` (api, scraper ↔ database)
+- **Stack:** PostgreSQL (database), scraper (recipe ingestion), FastAPI (api), React/Nginx (frontend)
+- **Repo:** [BryanMurphy02/allergy-safe-recipes](https://github.com/BryanMurphy02/allergy-safe-recipes)
+- **Description:** Containerised recipe discovery app served via Nginx on port 9001. Scrapes recipes from BBC Good Food and Budget Bytes, detects allergens and dietary tags
+
 ### Immich
 - **Status:** 🟢 Running
 - **Host:** Docker container (multi-container stack)
