@@ -55,7 +55,13 @@ Personal home lab running self-hosted media and services via Docker, across two 
 ```
 /opt/
 ├── docker/
+│   ├── allergy-safe-recipes/
+│   │   └── docker-compose.yml
+│   ├── calibre-web-automated/
+│   │   └── docker-compose.yml
 │   ├── digital-library/
+│   │   └── docker-compose.yml
+│   ├── immich/
 │   │   └── docker-compose.yml
 │   ├── minecraft/
 │   │   └── docker-compose.yml
@@ -66,6 +72,7 @@ Personal home lab running self-hosted media and services via Docker, across two 
     ├── process-monitor.py
     └── log-analyzer.py
 ```
+*Last updated: 2026-04-13*
 
 ### MurphyServer (Windows 11)
 ```
