@@ -14,6 +14,10 @@ A living document of what's installed and running on this server.
 - **Status:** ✅ Installed & Running
 - **Purpose:** Web server and reverse proxy for routing traffic to hosted services
 
+### Immich
+- **Status:** ✅ Installed & Running
+- **Purpose:** Self-hosted photo and video backup and management
+
 ### Calibre-Web Automated
 - **Status:** ✅ Installed & Running
 - **Purpose:** Self-hosted e-book library manager with automatic book ingestion
@@ -47,6 +51,15 @@ A living document of what's installed and running on this server.
 - **Stack:** Python Flask (web framework) + PostgreSQL (database, bundled in same container)
 - **Repo:** [BryanMurphy02/digital-library](https://github.com/BryanMurphy02/digital-library)
 - **Description:** Personal web app served via Nginx. A self-hosted digital library accessible through the browser on port 80.
+
+### Immich
+- **Status:** 🟢 Running
+- **Host:** Docker container (multi-container stack)
+- **Network:** `nexus-network` (immich-server only), `default` (internal stack communication)
+- **Stack:** immich-server, immich-machine-learning, Valkey/Redis, PostgreSQL (with vector extensions)
+- **Library:** `/home/bryan/immich/library`
+- **Database:** `/home/bryan/immich/postgres`
+- **Description:** Self-hosted photo and video management platform, served via Nginx on port 2283
 
 ### Minecraft Server
 - **Status:** 🟢 Running
