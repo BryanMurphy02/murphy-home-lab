@@ -1,0 +1,5 @@
+# Backup artifacts / logs shouldn't ever end up in the repo
+*.vma.zst
+*.tar.zst
+*.log
+.vzdump-tmp/
