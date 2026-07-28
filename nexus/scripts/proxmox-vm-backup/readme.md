@@ -24,6 +24,11 @@ triggered, e.g. via a udev rule) when the drive is connected.
 - Writes each run's archives into `<destination>/YYYY-MM-DD/`, so if you run
   the script on multiple nodes on the same day, all of those backups land in
   one shared dated folder rather than being scattered.
+- Names each archive with both the guest's ID and its current name — e.g.
+  `vzdump-qemu-102-nexus-minecraft-2026_07_27-18_30_00.vma.zst` — so you can
+  tell what a backup is at a glance instead of cross-referencing IDs. The
+  name is looked up from the guest's own config (`qm config` / `pct config`)
+  at backup time, so a rename in Proxmox is always reflected correctly.
 - Writes the backup archive, `vzdump`'s temporary working files, **and**
   this script's own run log all to the destination path — nothing is left
   behind on the Proxmox node's local storage.

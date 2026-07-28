@@ -10,6 +10,10 @@
 # (<destination>/YYYY-MM-DD/), so multiple nodes backing up on the same day
 # all land in the same shared folder.
 #
+# Archive filenames include both the guest's ID and its current name, e.g.
+# vzdump-qemu-102-nexus-minecraft-2026_07_27-18_30_00.vma.zst — so you can
+# identify a backup at a glance without cross-referencing IDs.
+#
 # Usage (non-interactive / scriptable):
 #   ./proxmox-backup.sh <VMID|all> <destination_path> [retention_count]
 #
@@ -147,6 +151,23 @@ fi
 
 # --- Run backup, forcing line-buffered output so progress streams live ----
 
+# Marker file so we can later identify exactly which archives this run
+# produced (needed since re-runs on the same day share a dated folder).
+START_MARKER="$DEST/.backup-start-marker"
+touch "$START_MARKER"
+
+# Build the list of guest IDs this run is targeting, so we can look up
+# their names afterward for renaming.
+declare -a TARGET_IDS
+if [ "$VMID" == "all" ]; then
+    readarray -t TARGET_IDS < <(
+        { qm list 2>/dev/null | tail -n +2 | awk '{print $1}'
+          pct list 2>/dev/null | tail -n +2 | awk '{print $1}'; } | grep -E '^[0-9]+$'
+    )
+else
+    TARGET_IDS=("$VMID")
+fi
+
 set +e
 if [ "$VMID" == "all" ]; then
     stdbuf -oL -eL vzdump --all --mode snapshot --compress zstd \
@@ -168,6 +189,61 @@ if [ "$STATUS" -ne 0 ]; then
 fi
 
 log "Backup completed successfully."
+
+# --- Rename archives to include the guest's name, not just its ID ---------
+# vzdump has no built-in option for this, so we rename after the fact.
+# Result: vzdump-qemu-102-nexus-minecraft-2026_07_27-18_30_00.vma.zst
+
+get_guest_name() {
+    local id="$1"
+    local name
+    name=$(qm config "$id" 2>/dev/null | awk -F': ' '/^name:/ {print $2}')
+    if [ -z "$name" ]; then
+        name=$(pct config "$id" 2>/dev/null | awk -F': ' '/^hostname:/ {print $2}')
+    fi
+    echo "$name"
+}
+
+sanitize_name() {
+    # Keep it filesystem-safe (exFAT/ext4/NTFS friendly): letters, numbers,
+    # dots, dashes, underscores only.
+    echo "$1" | tr -c 'A-Za-z0-9._-' '-' | sed 's/-\{2,\}/-/g; s/^-//; s/-$//'
+}
+
+for gid in "${TARGET_IDS[@]}"; do
+    guest_name=$(get_guest_name "$gid")
+    if [ -z "$guest_name" ]; then
+        log "Note: could not determine a name for guest $gid, leaving its filename as-is."
+        continue
+    fi
+    safe_name=$(sanitize_name "$guest_name")
+    [ -z "$safe_name" ] && continue
+
+    for prefix in vzdump-qemu vzdump-lxc; do
+        ext="vma.zst"
+        [ "$prefix" == "vzdump-lxc" ] && ext="tar.zst"
+
+        archive=$(find "$DUMPDIR" -maxdepth 1 -newer "$START_MARKER" \
+            -name "${prefix}-${gid}-*.${ext}" 2>/dev/null | head -n1)
+        [ -z "$archive" ] && continue
+
+        newarchive="${archive/${prefix}-${gid}-/${prefix}-${gid}-${safe_name}-}"
+        if [ "$archive" != "$newarchive" ] && [ ! -e "$newarchive" ]; then
+            mv "$archive" "$newarchive"
+            log "Renamed: $(basename "$archive") -> $(basename "$newarchive")"
+
+            base="${archive%.$ext}"
+            newbase="${newarchive%.$ext}"
+            for sidecar_ext in log notes; do
+                if [ -f "${base}.${sidecar_ext}" ]; then
+                    mv "${base}.${sidecar_ext}" "${newbase}.${sidecar_ext}"
+                fi
+            done
+        fi
+    done
+done
+
+rm -f "$START_MARKER"
 
 # --- Optional pruning -----------------------------------------------------
 # Keeps only the N most recent backup archives per guest ID, searching across
